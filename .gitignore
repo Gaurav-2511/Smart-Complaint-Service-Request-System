@@ -1,0 +1,40 @@
+# Java / Spring Boot
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Maven
+.mvn/wrapper/maven-wrapper.jar
+
+# Eclipse / STS
+.project
+.classpath
+.settings/
+.springBeans
+.sts4-cache/
+
+# IntelliJ
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# Angular / Node
+node_modules/
+dist/
+.angular/
+.cache/
+
+# Logs
+*.log
+
+# Environment / Secrets
+.env
+application-secret.properties
+
+# OS files
+.DS_Store
+Thumbs.db
