@@ -38,3 +38,5 @@ application-secret.properties
 # OS files
 .DS_Store
 Thumbs.db
+
+*.txt
