@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
 		user.setName(request.getName());
 		user.setEmail(request.getEmail());
 		user.setPassword(request.getPassword());
-		user.setRole(Role.ADMIN);
+		user.setRole(Role.USER);
 
 		userRepository.save(user);
 		return "User registered successfully";
