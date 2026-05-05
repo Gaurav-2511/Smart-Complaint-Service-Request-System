@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.smartcomplaint.dto.ComplaintCreateRequest;
 import com.smartcomplaint.dto.ComplaintResponse;
+import com.smartcomplaint.dto.DashboardStatsResponse;
+import com.smartcomplaint.dto.StatusUpdateRequest;
 import com.smartcomplaint.entity.Complaint;
 import com.smartcomplaint.entity.User;
 import com.smartcomplaint.enums.ComplaintStatus;
@@ -22,37 +24,85 @@ public class ComplaintServiceImpl implements ComplaintService {
 
 	private final ComplaintRepository complaintRepository;
 	private final UserRepository userRepository;
-	
+
 	@Override
 	public ComplaintResponse addComplaint(Long userId, ComplaintCreateRequest request) {
-		
+
 		User user = userRepository.findById(userId)
-		.orElseThrow(() -> new RuntimeException("User not found with id: "+userId));
-		
+				.orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
 		Complaint complaint = new Complaint();
-		
 		complaint.setTitle(request.getTitle());
 		complaint.setDescription(request.getDescription());
 		complaint.setStatus(ComplaintStatus.OPEN);
 		complaint.setUser(user);
-		
+
 		Complaint savedComplaint = complaintRepository.save(complaint);
-		
+
 		return mapToResponse(savedComplaint);
 	}
 
 	@Override
 	public List<ComplaintResponse> getComplaintsByUserId(Long userId) {
-		
+
 		boolean userExists = userRepository.existsById(userId);
-		
-		if(!userExists) {
-			throw new RuntimeException("User not found with id: "+userId);
+
+		if (!userExists) {
+			throw new RuntimeException("User not found with id: " + userId);
 		}
-		
+
 		List<Complaint> complaints = complaintRepository.findByUserId(userId);
-		
+
 		return complaints.stream().map(this::mapToResponse).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<ComplaintResponse> getAllComplaints() {
+
+		List<Complaint> complaints = complaintRepository.findAll();
+
+		return complaints.stream().map(this::mapToResponse).collect(Collectors.toList());
+	}
+
+	@Override
+	public ComplaintResponse updateComplaintStatus(Long complaintId, StatusUpdateRequest request) {
+
+		Complaint complaint = complaintRepository.findById(complaintId)
+				.orElseThrow(() -> new RuntimeException("Complaint not found with id: " + complaintId));
+
+		ComplaintStatus status;
+
+		try {
+			status = ComplaintStatus.valueOf(request.getStatus().toUpperCase());
+		} catch (IllegalArgumentException ex) {
+			throw new RuntimeException("Invalid status. Allowed values are OPEN, IN_PROGRESS, RESOLVED");
+		}
+
+		complaint.setStatus(status);
+
+		Complaint updatedComplaint = complaintRepository.save(complaint);
+
+		return mapToResponse(updatedComplaint);
+	}
+
+	@Override
+	public void deleteComplaint(Long complaintId) {
+
+		Complaint complaint = complaintRepository.findById(complaintId)
+				.orElseThrow(() -> new RuntimeException("Complaint not found with id: " + complaintId));
+
+		complaintRepository.delete(complaint);
+	}
+
+	@Override
+	public DashboardStatsResponse getDashboardStats() {
+
+		long totalComplaints = complaintRepository.count();
+		long openComplaints = complaintRepository.countByStatus(ComplaintStatus.OPEN);
+		long inProgressComplaints = complaintRepository.countByStatus(ComplaintStatus.IN_PROGRESS);
+		long resolvedComplaints = complaintRepository.countByStatus(ComplaintStatus.RESOLVED);
+
+		return new DashboardStatsResponse(totalComplaints, openComplaints, inProgressComplaints, resolvedComplaints);
 	}
 
 	private ComplaintResponse mapToResponse(Complaint complaint) {
@@ -61,5 +111,4 @@ public class ComplaintServiceImpl implements ComplaintService {
 				complaint.getStatus(), complaint.getCreatedAt(), complaint.getUpdatedAt(), complaint.getUser().getId(),
 				complaint.getUser().getName(), complaint.getUser().getEmail());
 	}
-
 }
