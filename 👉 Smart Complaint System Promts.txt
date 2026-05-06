@@ -1,0 +1,570 @@
+You are my Java Full Stack Project Mentor.
+
+I am a Third Year BCA student and I want to build a student-level but clean and professional full-stack project:
+
+Project Name:
+Smart Complaint & Service Request System
+
+Tech Stack:
+Backend: Java, Spring Boot, Spring Data JPA, MySQL, Lombok, Validation
+Frontend: Angular, TypeScript, Bootstrap/CSS
+Tools: Postman, GitHub, Eclipse/STS, VS Code, MySQL Workbench
+
+Important:
+- Explain everything in simple student/fresher level language.
+- Use Marathi + English mix for explanation.
+- But code, class names, method names, comments, API names, README content should be in English.
+- Do not make the project too advanced like company-level microservices.
+- Keep it simple, clean, and suitable for college submission and resume.
+- Avoid only basic CRUD. Add proper user/admin flow and status tracking.
+- Give complete working code step by step.
+- Explain where to create every file.
+- Follow Controller-Service-Repository architecture.
+- Use DTOs only where needed, not over-complicated.
+- Use validation and proper error handling.
+- Add role-based logic using simple role field: USER and ADMIN.
+- Do not skip steps.
+- At the end of every phase, give:
+  1. What we implemented
+  2. Files created/updated
+  3. How to test
+  4. Common errors and fixes
+  5. Interview questions
+  6. Next phase prompt
+
+Project Modules:
+1. Authentication/User Module
+2. Admin Module
+3. Complaint Module
+4. Status Tracking Module
+
+Main Features:
+User:
+- Register
+- Login
+- Add complaint
+- View own complaints
+- View complaint status
+
+Admin:
+- View all complaints
+- Update complaint status: OPEN, IN_PROGRESS, RESOLVED
+- Delete complaint if needed
+- View basic dashboard counts
+
+Use simple JWT only if needed in later phase. First build simple working project, then improve it.
+
+========================================================================================================================================
+========================================================================================================================================
+
+PROGRESS SUMMARY:
+Project just started.
+
+PHASE 1: Requirement Analysis
+
+Teach me step by step for my project:
+Smart Complaint & Service Request System
+
+Cover:
+1. Project overview in simple student language
+2. Real-world use case
+3. User roles: USER and ADMIN
+4. Role permissions table
+5. Main modules explanation
+6. Complete feature list
+7. Backend API blueprint: method | URL | role | purpose
+8. Database table overview
+9. Angular pages/components list
+10. Full system flow:
+   Register → Login → User adds complaint → Admin views → Admin updates status → User tracks status
+11. Tools setup checklist
+12. Final submission checklist
+
+Keep explanation Marathi + English mix.
+End with interview questions and Phase 2 prompt.
+
+
+
+
+
+PROGRESS SUMMARY:
+✅ Phase 1 Complete
+- Requirement analysis done
+- Roles finalized: USER and ADMIN
+- Modules finalized
+- API blueprint ready
+- Database overview ready
+
+PHASE 2: Backend Project Setup and Folder Structure
+
+Now guide me step by step to create Spring Boot backend.
+
+Cover:
+1. Spring Initializr setup
+2. Dependencies:
+   - Spring Web
+   - Spring Data JPA
+   - MySQL Driver
+   - Lombok
+   - Validation
+   - Spring Boot DevTools
+3. Project name and package suggestion
+4. Complete backend folder structure
+5. application.properties for MySQL
+6. Database creation SQL
+7. Explain Controller-Service-Repository architecture in simple language
+8. Create basic test API to check backend is running
+9. How to run project in Eclipse/STS
+10. Common errors and fixes
+
+Give complete code.
+End with testing steps, interview questions, and Phase 3 prompt.
+
+
+
+
+PROGRESS SUMMARY:
+✅ Phase 1 Complete: Requirements done
+✅ Phase 2 Complete: Backend setup and folder structure done
+
+PHASE 3: Database Design and Entity Classes
+
+Now implement database and entities for:
+1. User
+2. Complaint
+
+Requirements:
+User fields:
+- id
+- name
+- email
+- password
+- role
+
+Complaint fields:
+- id
+- title
+- description
+- status
+- createdAt
+- updatedAt
+- user relation
+
+Status values:
+OPEN, IN_PROGRESS, RESOLVED
+
+Cover:
+1. MySQL table design
+2. Entity classes with JPA annotations
+3. Enum for ComplaintStatus
+4. Relationship: One User has many Complaints
+5. Validation annotations
+6. Lombok usage
+7. Repository interfaces
+8. Explain every annotation simply
+9. How to verify tables in MySQL
+
+Give complete code with package names.
+End with testing steps, common errors, interview questions, and Phase 4 prompt.
+
+
+
+
+
+
+
+
+
+
+
+
+PROGRESS SUMMARY:
+✅ Phase 1 Complete: Requirements done
+✅ Phase 2 Complete: Backend setup done
+✅ Phase 3 Complete: Entities, database, repositories done
+
+PHASE 4: User Registration and Login
+
+Now implement simple authentication for student-level project.
+
+Features:
+1. Register user
+2. Login user
+3. Role support: USER and ADMIN
+4. Prevent duplicate email
+5. Validate input
+6. Return proper response messages
+
+Do not make it too complex.
+Use simple password matching first.
+JWT can be added later as an extra feature.
+
+Cover:
+1. DTO classes:
+   - RegisterRequest
+   - LoginRequest
+   - LoginResponse
+2. UserService interface
+3. UserServiceImpl
+4. UserController
+5. ApiResponse class
+6. GlobalExceptionHandler basic
+7. Postman testing:
+   - Register USER
+   - Register ADMIN
+   - Login success
+   - Login failed
+
+Give complete code.
+End with common errors, interview questions, and Phase 5 prompt.
+
+
+
+
+
+
+
+
+
+PROGRESS SUMMARY:
+✅ Phase 1 Complete
+✅ Phase 2 Complete
+✅ Phase 3 Complete
+✅ Phase 4 Complete: Register and Login implemented
+
+PHASE 5: User Complaint Module
+
+Now implement complaint features for USER.
+
+Features:
+1. Add complaint
+2. View own complaints by user id
+3. Complaint status should be OPEN by default
+4. createdAt should be set automatically
+5. Validation:
+   - title required
+   - description required
+
+Cover:
+1. ComplaintCreateRequest DTO
+2. ComplaintResponse DTO
+3. ComplaintService interface
+4. ComplaintServiceImpl
+5. ComplaintController
+6. Repository methods
+7. Proper API response
+8. Postman testing
+
+APIs:
+POST /api/complaints/user/{userId}
+GET /api/complaints/user/{userId}
+
+Give complete code.
+Explain in Marathi + English mix.
+End with common errors, interview questions, and Phase 6 prompt.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PROGRESS SUMMARY:
+✅ Phase 1 to 5 Complete
+- Backend setup done
+- Entities done
+- Register/Login done
+- User can add and view own complaints
+
+PHASE 6: Admin Complaint Management
+
+Now implement ADMIN features.
+
+Features:
+1. Admin can view all complaints
+2. Admin can update complaint status
+3. Admin can delete complaint
+4. Status allowed:
+   - OPEN
+   - IN_PROGRESS
+   - RESOLVED
+5. Admin dashboard counts:
+   - total complaints
+   - open complaints
+   - in progress complaints
+   - resolved complaints
+
+Cover:
+1. AdminController
+2. StatusUpdateRequest DTO
+3. DashboardStatsResponse DTO
+4. Service methods
+5. Repository count methods
+6. Postman testing
+
+APIs:
+GET /api/admin/complaints
+PUT /api/admin/complaints/{id}/status
+DELETE /api/admin/complaints/{id}
+GET /api/admin/dashboard/stats
+
+Keep it student-level but clean.
+End with common errors, interview questions, and Phase 7 prompt.
+
+
+
+
+
+
+
+
+
+
+PROGRESS SUMMARY:
+✅ Backend Phase 1 to 6 Complete
+- User Register/Login done
+- User Complaint Module done
+- Admin Complaint Management done
+- APIs tested in Postman
+
+PHASE 7: Angular Frontend Setup
+
+Now create Angular frontend for Smart Complaint & Service Request System.
+
+Cover:
+1. Angular project creation
+2. Bootstrap setup
+3. Folder structure
+4. Components:
+   - login
+   - register
+   - user-dashboard
+   - add-complaint
+   - my-complaints
+   - admin-dashboard
+   - admin-complaints
+   - navbar
+5. Routing setup
+6. Environment API base URL
+7. Basic UI layout
+8. How frontend connects with backend
+
+Use Angular standalone components if latest Angular is used.
+Give commands and complete code.
+End with common errors, interview questions, and Phase 8 prompt.
+
+
+
+
+
+
+
+
+
+
+PROGRESS SUMMARY:
+✅ Backend complete till admin APIs
+✅ Angular setup and routing complete
+
+PHASE 8: Angular Register and Login Implementation
+
+Now implement frontend authentication.
+
+Features:
+1. Register page
+2. Login page
+3. AuthService
+4. Store logged-in user in localStorage
+5. Store role and userId
+6. Redirect:
+   - USER → user dashboard
+   - ADMIN → admin dashboard
+7. Show error/success messages
+
+Cover:
+1. AuthService code
+2. Register component TS + HTML
+3. Login component TS + HTML
+4. Navbar login/logout logic
+5. Basic route protection simple method
+6. Testing with backend
+
+Keep code simple and fresher-level.
+End with common errors, interview questions, and Phase 9 prompt.
+
+
+
+
+
+
+
+PROGRESS SUMMARY:
+✅ Angular Register/Login done
+✅ User role and admin role redirect working
+
+PHASE 9: Angular User Complaint Module
+
+Now implement USER frontend features.
+
+Features:
+1. User dashboard
+2. Add complaint form
+3. My complaints list
+4. Show complaint status
+5. Show created date
+6. Form validation
+7. Status badge colors:
+   - OPEN
+   - IN_PROGRESS
+   - RESOLVED
+
+Cover:
+1. ComplaintService
+2. AddComplaintComponent
+3. MyComplaintsComponent
+4. UserDashboardComponent
+5. HTML + CSS/Bootstrap UI
+6. API integration
+7. Testing flow
+
+End with common errors, interview questions, and Phase 10 prompt.
+
+
+
+
+
+
+
+
+PROGRESS SUMMARY:
+✅ Backend admin APIs done
+✅ Angular auth done
+✅ User complaint module done
+
+PHASE 10: Angular Admin Panel
+
+Now implement ADMIN frontend features.
+
+Features:
+1. Admin dashboard cards
+2. View all complaints
+3. Update complaint status
+4. Delete complaint
+5. Show user name/email if available
+6. Use dropdown for status update
+7. Refresh table after update/delete
+
+Cover:
+1. AdminDashboardComponent
+2. AdminComplaintsComponent
+3. ComplaintService admin methods
+4. HTML + Bootstrap UI
+5. Error/success messages
+6. Testing flow
+
+Keep UI clean but student-level.
+End with common errors, interview questions, and Phase 11 prompt.
+
+
+
+
+
+
+
+
+
+
+
+PROGRESS SUMMARY:
+✅ Backend core complete
+✅ Angular core complete
+✅ User and Admin flows working
+
+PHASE 11: Improvements and Extra Features
+
+Now improve project for college submission and resume.
+
+Add:
+1. Backend validation messages
+2. Global exception handling
+3. Search complaints by keyword
+4. Filter complaints by status
+5. Sort complaints by date
+6. Better UI messages
+7. Loading indicators
+8. Empty list messages
+9. Confirm before delete
+10. Clean code review
+
+Keep it simple and not over-advanced.
+Give complete code changes file by file.
+End with testing checklist, common errors, interview questions, and Phase 12 prompt.
+
+
+
+
+
+
+
+
+PROGRESS SUMMARY:
+✅ Full project implementation complete
+✅ Backend working
+✅ Frontend working
+✅ User/Admin flow working
+✅ Validation and extra features added
+
+PHASE 12: Final Submission Preparation
+
+Now help me prepare final college submission.
+
+Cover:
+1. Backend final testing checklist
+2. Frontend final testing checklist
+3. Postman Collection APIs list
+4. Screenshots list required
+5. Demo video flow script
+6. GitHub upload steps for:
+   - backend folder
+   - frontend folder
+7. .gitignore for Spring Boot
+8. .gitignore for Angular
+9. Professional README.md
+
+README should include:
+- Project title
+- Description
+- Features
+- Tech stack
+- Modules
+- API list
+- Database setup
+- Backend setup
+- Frontend setup
+- Screenshots section
+- Future scope
+- Author section
+
+Keep README in English.
+Explain steps in Marathi + English mix.
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -28,6 +28,20 @@ dist/
 .angular/
 .cache/
 
+# Backend specific
+smart-complaint-backend/target/
+smart-complaint-backend/.metadata/
+smart-complaint-backend/.settings/
+smart-complaint-backend/.classpath
+smart-complaint-backend/.project
+
+# Frontend specific
+smart-complaint-frontend/node_modules/
+smart-complaint-frontend/dist/
+smart-complaint-frontend/.angular/
+smart-complaint-frontend/.vscode/
+smart-complaint-frontend/.env
+
 # Logs
 *.log
 
@@ -38,5 +52,3 @@ application-secret.properties
 # OS files
 .DS_Store
 Thumbs.db
-
-*.txt

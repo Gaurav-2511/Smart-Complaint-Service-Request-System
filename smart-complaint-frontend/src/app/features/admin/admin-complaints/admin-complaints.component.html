@@ -1,0 +1,70 @@
+<div class="page-wrapper">
+  <div class="container">
+
+    <div class="mb-4">
+      <h2>Manage Complaints</h2>
+      <p class="text-muted">
+        View all user complaints and update their status.
+      </p>
+    </div>
+
+    <div class="card shadow">
+      <div class="card-body">
+
+        <div *ngIf="complaints.length === 0" class="text-center text-muted py-4">
+          No complaints found. Admin complaints API will be connected in Phase 10.
+        </div>
+
+        <div class="table-responsive" *ngIf="complaints.length > 0">
+          <table class="table table-bordered align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Update Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let complaint of complaints; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ complaint.userName }}</td>
+                <td>{{ complaint.title }}</td>
+                <td>{{ complaint.description }}</td>
+                <td>{{ complaint.status }}</td>
+
+                <td>
+                  <select
+                    class="form-select"
+                    [(ngModel)]="complaint.status"
+                    name="status{{ complaint.id }}"
+                    (change)="updateStatus(complaint.id, complaint.status)"
+                  >
+                    <option *ngFor="let status of statusList" [value]="status">
+                      {{ status }}
+                    </option>
+                  </select>
+                </td>
+
+                <td>
+                  <button
+                    class="btn btn-danger btn-sm"
+                    (click)="deleteComplaint(complaint.id)"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

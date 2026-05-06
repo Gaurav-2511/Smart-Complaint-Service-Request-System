@@ -1,0 +1,58 @@
+<div class="page-wrapper">
+  <div class="container">
+
+    <div class="mb-4">
+      <h2>Admin Dashboard</h2>
+      <p class="text-muted">
+        Admin can manage all complaints and update status.
+      </p>
+    </div>
+
+    <div class="row g-4">
+
+      <div class="col-md-3">
+        <div class="card shadow text-center">
+          <div class="card-body">
+            <h6 class="text-muted">Total</h6>
+            <h2>{{ totalComplaints }}</h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card shadow text-center">
+          <div class="card-body">
+            <h6 class="text-muted">Open</h6>
+            <h2>{{ openComplaints }}</h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card shadow text-center">
+          <div class="card-body">
+            <h6 class="text-muted">In Progress</h6>
+            <h2>{{ inProgressComplaints }}</h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card shadow text-center">
+          <div class="card-body">
+            <h6 class="text-muted">Resolved</h6>
+            <h2>{{ resolvedComplaints }}</h2>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="mt-4">
+      <a routerLink="/admin/complaints" class="btn btn-primary">
+        Manage Complaints
+      </a>
+    </div>
+
+  </div>
+</div>

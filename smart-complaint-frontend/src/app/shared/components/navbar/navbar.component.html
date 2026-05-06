@@ -1,0 +1,70 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold" routerLink="/login">
+      Smart Complaint System
+    </a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mainNavbar"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav ms-auto">
+
+        <li class="nav-item" *ngIf="!isLoggedIn()">
+          <a class="nav-link" routerLink="/login" routerLinkActive="active">
+            Login
+          </a>
+        </li>
+
+        <li class="nav-item" *ngIf="!isLoggedIn()">
+          <a class="nav-link" routerLink="/register" routerLinkActive="active">
+            Register
+          </a>
+        </li>
+
+        <li class="nav-item" *ngIf="isLoggedIn() && getRole() === 'USER'">
+          <a class="nav-link" routerLink="/user/dashboard" routerLinkActive="active">
+            User Dashboard
+          </a>
+        </li>
+
+        <li class="nav-item" *ngIf="isLoggedIn() && getRole() === 'USER'">
+          <a class="nav-link" routerLink="/user/add-complaint" routerLinkActive="active">
+            Add Complaint
+          </a>
+        </li>
+
+        <li class="nav-item" *ngIf="isLoggedIn() && getRole() === 'USER'">
+          <a class="nav-link" routerLink="/user/my-complaints" routerLinkActive="active">
+            My Complaints
+          </a>
+        </li>
+
+        <li class="nav-item" *ngIf="isLoggedIn() && getRole() === 'ADMIN'">
+          <a class="nav-link" routerLink="/admin/dashboard" routerLinkActive="active">
+            Admin Dashboard
+          </a>
+        </li>
+
+        <li class="nav-item" *ngIf="isLoggedIn() && getRole() === 'ADMIN'">
+          <a class="nav-link" routerLink="/admin/complaints" routerLinkActive="active">
+            Manage Complaints
+          </a>
+        </li>
+
+        <li class="nav-item" *ngIf="isLoggedIn()">
+          <button class="btn btn-light btn-sm ms-lg-3 mt-2 mt-lg-1" (click)="logout()">
+            Logout
+          </button>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
