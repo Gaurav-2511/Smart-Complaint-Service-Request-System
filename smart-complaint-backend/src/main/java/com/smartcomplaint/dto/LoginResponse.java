@@ -1,19 +1,19 @@
 package com.smartcomplaint.dto;
 
-import lombok.*;
+import com.smartcomplaint.enums.Role;
 
-@Data
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class LoginResponse {
 
-	private Long userId;
-	
-	private String name;
-	
-	private String email;
-	
-	private String role;
-	
-	private String message;
+    private String token;
+    private Long userId;
+    private String name;
+    private String email;
+    private Role role;
 }

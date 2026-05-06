@@ -1,5 +1,6 @@
 package com.smartcomplaint.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -31,13 +32,19 @@ public class AdminController {
 	private final ComplaintService complaintService;
 
 	@GetMapping("/complaints")
-	public ResponseEntity<ApiResponse<List<ComplaintResponse>>> getAllComplaints() {
-		List<ComplaintResponse> complaints = complaintService.getAllComplaints();
+	public ResponseEntity<ApiResponse<List<ComplaintResponse>>> getAllComplaints(Principal principal) {
 
-		ApiResponse<List<ComplaintResponse>> response = new ApiResponse<List<ComplaintResponse>>(true,
-				"All complaints fetched successfully", complaints);
+	    String adminEmail = principal.getName();
 
-		return new ResponseEntity<ApiResponse<List<ComplaintResponse>>>(response, HttpStatus.OK);
+	    List<ComplaintResponse> complaints = complaintService.getAllComplaints();
+
+	    ApiResponse<List<ComplaintResponse>> response = new ApiResponse<>(
+	            true,
+	            "All complaints fetched successfully by admin: " + adminEmail,
+	            complaints
+	    );
+
+	    return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@PutMapping("/complaints/{id}/status")

@@ -2,11 +2,7 @@ package com.smartcomplaint.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.smartcomplaint.dto.ApiResponse;
 import com.smartcomplaint.dto.LoginRequest;
@@ -18,30 +14,30 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/api/auth/user")
 public class UserController {
 
 	private final UserService userService;
 
 	@PostMapping("/register")
-	public ResponseEntity<ApiResponse<String>> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
-		String message = userService.registerUser(registerRequest);
+	public ResponseEntity<ApiResponse<String>> registerUser(@Valid @RequestBody RegisterRequest request) {
 
-		ApiResponse<String> response = new ApiResponse<String>(true, message, null);
+		String message = userService.registerUser(request);
+
+		ApiResponse<String> response = new ApiResponse<>(true, message, null);
 
 		return new ResponseEntity<ApiResponse<String>>(response, HttpStatus.CREATED);
 	}
 
-	
 	@PostMapping("/login")
-	public ResponseEntity<ApiResponse<LoginResponse>> login(@Valid @RequestBody LoginRequest loginRequest) {
-		LoginResponse loginUser = userService.loginUser(loginRequest);
+	public ResponseEntity<ApiResponse<LoginResponse>> loginUser(@Valid @RequestBody LoginRequest request) {
 
-		ApiResponse<LoginResponse> response = new ApiResponse<LoginResponse>(true, "Login success", loginUser);
+		LoginResponse loginResponse = userService.loginUser(request);
 
-		return new ResponseEntity<ApiResponse<LoginResponse>>(response, HttpStatus.OK);
+		ApiResponse<LoginResponse> response = new ApiResponse<>(true, "Login successful", loginResponse);
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-
 }

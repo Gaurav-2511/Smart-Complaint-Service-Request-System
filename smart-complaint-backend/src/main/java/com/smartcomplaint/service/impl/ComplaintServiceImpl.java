@@ -12,6 +12,8 @@ import com.smartcomplaint.dto.StatusUpdateRequest;
 import com.smartcomplaint.entity.Complaint;
 import com.smartcomplaint.entity.User;
 import com.smartcomplaint.enums.ComplaintStatus;
+import com.smartcomplaint.exception.InvalidStatusException;
+import com.smartcomplaint.exception.ResourceNotFoundException;
 import com.smartcomplaint.repository.ComplaintRepository;
 import com.smartcomplaint.repository.UserRepository;
 import com.smartcomplaint.service.ComplaintService;
@@ -22,93 +24,107 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ComplaintServiceImpl implements ComplaintService {
 
-	private final ComplaintRepository complaintRepository;
-	private final UserRepository userRepository;
+    private final ComplaintRepository complaintRepository;
+    private final UserRepository userRepository;
 
-	@Override
-	public ComplaintResponse addComplaint(Long userId, ComplaintCreateRequest request) {
+    @Override
+    public ComplaintResponse addComplaint(String userEmail, ComplaintCreateRequest request) {
 
-		User user = userRepository.findById(userId)
-				.orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + userEmail));
 
-		Complaint complaint = new Complaint();
-		complaint.setTitle(request.getTitle());
-		complaint.setDescription(request.getDescription());
-		complaint.setStatus(ComplaintStatus.OPEN);
-		complaint.setUser(user);
+        Complaint complaint = new Complaint();
+        complaint.setTitle(request.getTitle());
+        complaint.setDescription(request.getDescription());
+        complaint.setStatus(ComplaintStatus.OPEN);
+        complaint.setUser(user);
 
-		Complaint savedComplaint = complaintRepository.save(complaint);
+        Complaint savedComplaint = complaintRepository.save(complaint);
 
-		return mapToResponse(savedComplaint);
-	}
+        return mapToResponse(savedComplaint);
+    }
 
-	@Override
-	public List<ComplaintResponse> getComplaintsByUserId(Long userId) {
+    @Override
+    public List<ComplaintResponse> getMyComplaints(String userEmail) {
 
-		boolean userExists = userRepository.existsById(userId);
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + userEmail));
 
-		if (!userExists) {
-			throw new RuntimeException("User not found with id: " + userId);
-		}
+        List<Complaint> complaints = complaintRepository.findByUserId(user.getId());
 
-		List<Complaint> complaints = complaintRepository.findByUserId(userId);
+        return complaints.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
 
-		return complaints.stream().map(this::mapToResponse).collect(Collectors.toList());
-	}
+    @Override
+    public List<ComplaintResponse> getAllComplaints() {
 
-	@Override
-	public List<ComplaintResponse> getAllComplaints() {
+        List<Complaint> complaints = complaintRepository.findAll();
 
-		List<Complaint> complaints = complaintRepository.findAll();
+        return complaints.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
 
-		return complaints.stream().map(this::mapToResponse).collect(Collectors.toList());
-	}
+    @Override
+    public ComplaintResponse updateComplaintStatus(Long complaintId, StatusUpdateRequest request) {
 
-	@Override
-	public ComplaintResponse updateComplaintStatus(Long complaintId, StatusUpdateRequest request) {
+        Complaint complaint = complaintRepository.findById(complaintId)
+                .orElseThrow(() -> new ResourceNotFoundException("Complaint not found with id: " + complaintId));
 
-		Complaint complaint = complaintRepository.findById(complaintId)
-				.orElseThrow(() -> new RuntimeException("Complaint not found with id: " + complaintId));
+        ComplaintStatus status;
 
-		ComplaintStatus status;
+        try {
+            status = ComplaintStatus.valueOf(request.getStatus().toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            throw new InvalidStatusException("Invalid status. Allowed values are OPEN, IN_PROGRESS, RESOLVED");
+        }
 
-		try {
-			status = ComplaintStatus.valueOf(request.getStatus().toUpperCase());
-		} catch (IllegalArgumentException ex) {
-			throw new RuntimeException("Invalid status. Allowed values are OPEN, IN_PROGRESS, RESOLVED");
-		}
+        complaint.setStatus(status);
 
-		complaint.setStatus(status);
+        Complaint updatedComplaint = complaintRepository.save(complaint);
 
-		Complaint updatedComplaint = complaintRepository.save(complaint);
+        return mapToResponse(updatedComplaint);
+    }
 
-		return mapToResponse(updatedComplaint);
-	}
+    @Override
+    public void deleteComplaint(Long complaintId) {
 
-	@Override
-	public void deleteComplaint(Long complaintId) {
+        Complaint complaint = complaintRepository.findById(complaintId)
+                .orElseThrow(() -> new ResourceNotFoundException("Complaint not found with id: " + complaintId));
 
-		Complaint complaint = complaintRepository.findById(complaintId)
-				.orElseThrow(() -> new RuntimeException("Complaint not found with id: " + complaintId));
+        complaintRepository.delete(complaint);
+    }
 
-		complaintRepository.delete(complaint);
-	}
+    @Override
+    public DashboardStatsResponse getDashboardStats() {
 
-	@Override
-	public DashboardStatsResponse getDashboardStats() {
+        long totalComplaints = complaintRepository.count();
+        long openComplaints = complaintRepository.countByStatus(ComplaintStatus.OPEN);
+        long inProgressComplaints = complaintRepository.countByStatus(ComplaintStatus.IN_PROGRESS);
+        long resolvedComplaints = complaintRepository.countByStatus(ComplaintStatus.RESOLVED);
 
-		long totalComplaints = complaintRepository.count();
-		long openComplaints = complaintRepository.countByStatus(ComplaintStatus.OPEN);
-		long inProgressComplaints = complaintRepository.countByStatus(ComplaintStatus.IN_PROGRESS);
-		long resolvedComplaints = complaintRepository.countByStatus(ComplaintStatus.RESOLVED);
+        return new DashboardStatsResponse(
+                totalComplaints,
+                openComplaints,
+                inProgressComplaints,
+                resolvedComplaints
+        );
+    }
 
-		return new DashboardStatsResponse(totalComplaints, openComplaints, inProgressComplaints, resolvedComplaints);
-	}
+    private ComplaintResponse mapToResponse(Complaint complaint) {
 
-	private ComplaintResponse mapToResponse(Complaint complaint) {
-
-		return new ComplaintResponse(complaint.getId(), complaint.getTitle(), complaint.getDescription(),
-				complaint.getStatus(), complaint.getCreatedAt(), complaint.getUpdatedAt(), complaint.getUser().getId(),
-				complaint.getUser().getName(), complaint.getUser().getEmail());
-	}
+        return new ComplaintResponse(
+                complaint.getId(),
+                complaint.getTitle(),
+                complaint.getDescription(),
+                complaint.getStatus(),
+                complaint.getCreatedAt(),
+                complaint.getUpdatedAt(),
+                complaint.getUser().getId(),
+                complaint.getUser().getName(),
+                complaint.getUser().getEmail()
+        );
+    }
 }

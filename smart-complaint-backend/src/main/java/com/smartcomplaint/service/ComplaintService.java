@@ -9,15 +9,15 @@ import com.smartcomplaint.dto.StatusUpdateRequest;
 
 public interface ComplaintService {
 
-	ComplaintResponse addComplaint(Long userId, ComplaintCreateRequest request);
+    ComplaintResponse addComplaint(String userEmail, ComplaintCreateRequest request);
 
-	List<ComplaintResponse> getComplaintsByUserId(Long userId);
+    List<ComplaintResponse> getMyComplaints(String userEmail);
 
-	List<ComplaintResponse> getAllComplaints();
+    List<ComplaintResponse> getAllComplaints();
 
-	ComplaintResponse updateComplaintStatus(Long complaintId, StatusUpdateRequest request);
-	
-	 void deleteComplaint(Long complaintId);
-	 
-	 DashboardStatsResponse getDashboardStats();
+    ComplaintResponse updateComplaintStatus(Long complaintId, StatusUpdateRequest request);
+
+    void deleteComplaint(Long complaintId);
+
+    DashboardStatsResponse getDashboardStats();
 }
