@@ -1,8 +1,7 @@
 .navbar-brand {
-  letter-spacing: 0.3px;
+  font-weight: 600;
 }
 
-.nav-link.active {
-  font-weight: bold;
-  text-decoration: underline;
-} 
+.nav-link {
+  cursor: pointer;
+}

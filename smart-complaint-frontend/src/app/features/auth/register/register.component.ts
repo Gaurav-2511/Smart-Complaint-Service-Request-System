@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { RegisterRequest } from '../../../models/auth.model';
+import { AuthService } from '../../../services/auth.service.service';
 
 @Component({
   selector: 'app-register',
@@ -11,17 +13,43 @@ import { RouterLink } from '@angular/router';
 })
 export class Register {
 
-  name: string = '';
-  email: string = '';
-  password: string = '';
+  registerRequest: RegisterRequest = {
+    name: '',
+    email: '',
+    password: ''
+  };
+
+  successMessage = '';
+  errorMessage = '';
+  isLoading = false;
+
+  constructor(private authService: AuthService, private router: Router) { }
 
   onRegister(): void {
-    console.log('Register form submitted');
-    console.log('Name:', this.name);
-    console.log('Email:', this.email);
-    console.log('Password:', this.password);
 
-    alert('Register API integration will be implemented in Phase 8');
+    this.successMessage = '';
+    this.errorMessage = '';
+
+    if (!this.registerRequest.name || !this.registerRequest.email || !this.registerRequest.password) {
+      this.errorMessage = 'All fields are required.';
+      return;
+    }
+
+    this.isLoading = true;
+
+    this.authService.register(this.registerRequest).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        this.successMessage = response.message || 'Registration successful. Please login.';
+
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 1000);
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = error.error?.message || 'Registration failed. Please try again.';
+      }
+    });
   }
-
 }
