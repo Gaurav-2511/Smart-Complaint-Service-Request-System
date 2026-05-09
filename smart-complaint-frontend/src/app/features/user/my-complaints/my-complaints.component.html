@@ -1,52 +1,53 @@
-<div class="page-wrapper">
-  <div class="container">
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>My Complaints</h3>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <div>
-        <h2>My Complaints</h2>
-        <p class="text-muted mb-0">
-          Track your complaint status here.
-        </p>
-      </div>
+    <a routerLink="/user/add-complaint" class="btn btn-primary">
+      Add Complaint
+    </a>
+  </div>
+
+  <div *ngIf="isLoading" class="alert alert-info">
+    Loading complaints...
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!isLoading && complaints.length === 0" class="alert alert-warning">
+    No complaints found.
+  </div>
+
+  <div class="card shadow-sm" *ngIf="complaints.length > 0">
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let complaint of complaints">
+            <td>{{ complaint.id }}</td>
+            <td>{{ complaint.title }}</td>
+            <td>{{ complaint.description }}</td>
+            <td>
+              <span [class]="getStatusBadgeClass(complaint.status)">
+                {{ complaint.status }}
+              </span>
+            </td>
+            <td>{{ complaint.createdAt | date:'short' }}</td>
+            <td>{{ complaint.updatedAt | date:'short' }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-
-    <div class="card shadow">
-      <div class="card-body">
-
-        <div *ngIf="complaints.length === 0" class="text-center text-muted py-4">
-          No complaints found. Complaint list API will be connected in Phase 9.
-        </div>
-
-        <div class="table-responsive" *ngIf="complaints.length > 0">
-          <table class="table table-bordered align-middle">
-            <thead class="table-light">
-              <tr>
-                <th>#</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Created Date</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr *ngFor="let complaint of complaints; let i = index">
-                <td>{{ i + 1 }}</td>
-                <td>{{ complaint.title }}</td>
-                <td>{{ complaint.description }}</td>
-                <td>
-                  <span class="badge">
-                    {{ complaint.status }}
-                  </span>
-                </td>
-                <td>{{ complaint.createdAt }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-      </div>
-    </div>
-
   </div>
 </div>

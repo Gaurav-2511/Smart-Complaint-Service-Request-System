@@ -1,24 +1,61 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ComplaintService } from '../../../services/complaint.service';
+import { Router, RouterLink } from '@angular/router';
+import { ComplaintCreateRequest } from '../../../models/complaint.model';
 
 @Component({
   selector: 'app-add-complaint',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './add-complaint.component.html',
   styleUrl: './add-complaint.component.css',
 })
 export class AddComplaint {
 
-  title:string = '';
-  description:string = '';
+  complaint: ComplaintCreateRequest = {
+    title: '',
+    description: ''
+  };
 
-    onSubmit(): void {
-    console.log('Complaint form submitted');
-    console.log('Title:', this.title);
-    console.log('Description:', this.description);
+  successMessage = '';
+  errorMessage = '';
+  isLoading = false;
 
-    alert('Add complaint API integration will be implemented in Phase 9');
+  constructor(
+    private complaintService: ComplaintService,
+    private router: Router
+  ) { }
+
+  submitComplaint(): void {
+    this.successMessage = '';
+    this.errorMessage = '';
+
+    if (!this.complaint.title.trim() || !this.complaint.description.trim()) {
+      this.errorMessage = 'Title and description are required';
+      return;
+    }
+
+    this.isLoading = true;
+
+    this.complaintService.addComplaint(this.complaint).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        this.successMessage = response.message || 'Complaint added successfully';
+
+        this.complaint = {
+          title: '',
+          description: ''
+        };
+
+        setTimeout(() => {
+          this.router.navigate(['/user/my-complaints']);
+        }, 1000);
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = error.error?.message || 'Something went wrong while adding complaint';
+      }
+    });
   }
-
 }

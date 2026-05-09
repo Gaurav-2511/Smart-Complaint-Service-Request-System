@@ -42,10 +42,14 @@ export const routes: Routes = [
   {
     path: 'user/add-complaint',
     component: AddComplaint,
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'USER' }
   },
   {
     path: 'user/my-complaints',
-    component: MyComplaints
+    component: MyComplaints,
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'USER' }
   },
 
   {

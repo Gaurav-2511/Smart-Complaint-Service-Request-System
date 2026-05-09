@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { LoginRequest, LoginResponse, RegisterRequest } from '../models/auth.model';
 import { Observable } from 'rxjs';
+import { ApiResponse } from '../models/api-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,17 +12,23 @@ import { Observable } from 'rxjs';
 export class AuthService {
 
   // Backend API Base URL
-  private apiUrl = `${environment.apiBaseUrl}/users`
+  private apiUrl = `${environment.apiBaseUrl}/users`;
   private readonly validRoles = ['USER', 'ADMIN'];
 
-  constructor(private httpClient: HttpClient, private router: Router) { }
+  constructor(
+    private httpClient: HttpClient,
+    private router: Router
+  ) { }
 
   // =========================
   // REGISTER USER API
   // =========================
   // Sends register data to backend
-  register(registerRequest: RegisterRequest): Observable<any> {
-    return this.httpClient.post<any>(`${this.apiUrl}/register`, registerRequest);
+  register(registerRequest: RegisterRequest): Observable<ApiResponse<string>> {
+    return this.httpClient.post<ApiResponse<string>>(
+      `${this.apiUrl}/register`,
+      registerRequest
+    );
   }
 
   // =========================
@@ -29,16 +36,17 @@ export class AuthService {
   // =========================
   // Sends login credentials to backend
   login(loginRequest: LoginRequest): Observable<LoginResponse> {
-    return this.httpClient.post<LoginResponse>(`${this.apiUrl}/login`, loginRequest)
+    return this.httpClient.post<LoginResponse>(
+      `${this.apiUrl}/login`,
+      loginRequest
+    );
   }
-
 
   // =========================
   // SAVE LOGIN DATA
   // =========================
   // Stores login response data in localStorage
   saveLoginData(response: LoginResponse): void {
-
     localStorage.setItem('token', response.token);
     localStorage.setItem('userId', response.userId.toString());
     localStorage.setItem('name', response.name);
@@ -53,7 +61,6 @@ export class AuthService {
   getToken(): string | null {
     return localStorage.getItem('token');
   }
-
 
   // =========================
   // GET USER ID
@@ -72,7 +79,6 @@ export class AuthService {
     return localStorage.getItem('name');
   }
 
-
   // =========================
   // GET USER EMAIL
   // =========================
@@ -80,7 +86,6 @@ export class AuthService {
   getEmail(): string | null {
     return localStorage.getItem('email');
   }
-
 
   // =========================
   // GET USER ROLE
@@ -90,7 +95,6 @@ export class AuthService {
     return localStorage.getItem('role');
   }
 
-
   // =========================
   // CHECK USER LOGIN STATUS
   // =========================
@@ -98,7 +102,6 @@ export class AuthService {
   isLoggedIn(): boolean {
     return !!this.getToken() && this.validRoles.includes(this.getRole() ?? '');
   }
-
 
   // =========================
   // CHECK USER ROLE
@@ -108,7 +111,6 @@ export class AuthService {
     return this.getRole() === 'USER';
   }
 
-
   // =========================
   // CHECK ADMIN ROLE
   // =========================
@@ -116,7 +118,6 @@ export class AuthService {
   isAdmin(): boolean {
     return this.getRole() === 'ADMIN';
   }
-
 
   // =========================
   // GET DASHBOARD URL
@@ -136,7 +137,6 @@ export class AuthService {
     return '/login';
   }
 
-
   // =========================
   // REDIRECT USER
   // =========================
@@ -144,7 +144,6 @@ export class AuthService {
   redirectBasedOnRole(): void {
     this.router.navigate([this.getDashboardUrl()]);
   }
-
 
   // =========================
   // LOGOUT USER
