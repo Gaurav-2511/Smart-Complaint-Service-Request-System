@@ -15,26 +15,81 @@
 
     <div class="collapse navbar-collapse" id="navbarMenu">
 
+      <ul class="navbar-nav me-auto">
+
+        <ng-container *ngIf="authService.isUser()">
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLink="/user/dashboard"
+              routerLinkActive="active">
+              User Dashboard
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLink="/user/add-complaint"
+              routerLinkActive="active">
+              Add Complaint
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLink="/user/my-complaints"
+              routerLinkActive="active">
+              My Complaints
+            </a>
+          </li>
+        </ng-container>
+
+        <ng-container *ngIf="authService.isAdmin()">
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLink="/admin/dashboard"
+              routerLinkActive="active">
+              Admin Dashboard
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLink="/admin/complaints"
+              routerLinkActive="active">
+              All Complaints
+            </a>
+          </li>
+        </ng-container>
+
+      </ul>
+
       <ul class="navbar-nav ms-auto">
 
         <li class="nav-item" *ngIf="!authService.isLoggedIn()">
-          <a class="nav-link" routerLink="/login">Login</a>
+          <a
+            class="nav-link"
+            routerLink="/login"
+            routerLinkActive="active">
+            Login
+          </a>
         </li>
 
         <li class="nav-item" *ngIf="!authService.isLoggedIn()">
-          <a class="nav-link" routerLink="/register">Register</a>
-        </li>
-
-        <li class="nav-item" *ngIf="authService.isUser()">
-          <a class="nav-link" routerLink="/user/dashboard">User Dashboard</a>
-        </li>
-
-        <li class="nav-item" *ngIf="authService.isAdmin()">
-          <a class="nav-link" routerLink="/admin/dashboard">Admin Dashboard</a>
+          <a
+            class="nav-link"
+            routerLink="/register"
+            routerLinkActive="active">
+            Register
+          </a>
         </li>
 
         <li class="nav-item" *ngIf="authService.isLoggedIn()">
-          <span class="nav-link">
+          <span class="nav-link text-light">
             Welcome, {{ authService.getName() }}
           </span>
         </li>

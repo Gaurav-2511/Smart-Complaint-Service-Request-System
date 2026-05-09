@@ -1,70 +1,94 @@
-<div class="page-wrapper">
-  <div class="container">
+<div class="container mt-4">
 
-    <div class="mb-4">
-      <h2>Manage Complaints</h2>
-      <p class="text-muted">
-        View all user complaints and update their status.
-      </p>
-    </div>
-
-    <div class="card shadow">
-      <div class="card-body">
-
-        <div *ngIf="complaints.length === 0" class="text-center text-muted py-4">
-          No complaints found. Admin complaints API will be connected in Phase 10.
-        </div>
-
-        <div class="table-responsive" *ngIf="complaints.length > 0">
-          <table class="table table-bordered align-middle">
-            <thead class="table-light">
-              <tr>
-                <th>#</th>
-                <th>User</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Update Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr *ngFor="let complaint of complaints; let i = index">
-                <td>{{ i + 1 }}</td>
-                <td>{{ complaint.userName }}</td>
-                <td>{{ complaint.title }}</td>
-                <td>{{ complaint.description }}</td>
-                <td>{{ complaint.status }}</td>
-
-                <td>
-                  <select
-                    class="form-select"
-                    [(ngModel)]="complaint.status"
-                    name="status{{ complaint.id }}"
-                    (change)="updateStatus(complaint.id, complaint.status)"
-                  >
-                    <option *ngFor="let status of statusList" [value]="status">
-                      {{ status }}
-                    </option>
-                  </select>
-                </td>
-
-                <td>
-                  <button
-                    class="btn btn-danger btn-sm"
-                    (click)="deleteComplaint(complaint.id)"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-      </div>
-    </div>
-
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>All Complaints</h3>
+    <button class="btn btn-primary btn-sm" (click)="loadComplaints()">
+      Refresh
+    </button>
   </div>
+
+  <div *ngIf="loading" class="alert alert-info">
+    Loading complaints...
+  </div>
+
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div class="table-responsive" *ngIf="!loading && complaints.length > 0">
+    <table class="table table-bordered table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Description</th>
+          <th>User</th>
+          <th>Status</th>
+          <th>Change Status</th>
+          <th>Created</th>
+          <th>Updated</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let complaint of complaints">
+          <td>{{ complaint.id }}</td>
+
+          <td>{{ complaint.title }}</td>
+
+          <td>{{ complaint.description }}</td>
+
+          <td>
+            <div *ngIf="complaint.userName || complaint.userEmail; else noUser">
+              <strong>{{ complaint.userName }}</strong><br>
+              <small>{{ complaint.userEmail }}</small>
+            </div>
+
+            <ng-template #noUser>
+              <span class="text-muted">Not Available</span>
+            </ng-template>
+          </td>
+
+          <td>
+            <span [class]="getStatusBadgeClass(complaint.status)">
+              {{ complaint.status }}
+            </span>
+          </td>
+
+          <td>
+            <select
+              class="form-select form-select-sm"
+              [ngModel]="complaint.status"
+              (ngModelChange)="updateStatus(complaint, $event)">
+              <option *ngFor="let status of statuses" [value]="status">
+                {{ status }}
+              </option>
+            </select>
+          </td>
+
+          <td>{{ complaint.createdAt | date:'short' }}</td>
+
+          <td>{{ complaint.updatedAt | date:'short' }}</td>
+
+          <td>
+            <button
+              class="btn btn-danger btn-sm"
+              (click)="deleteComplaint(complaint.id)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="!loading && complaints.length === 0" class="alert alert-secondary">
+    No complaints found.
+  </div>
+
 </div>

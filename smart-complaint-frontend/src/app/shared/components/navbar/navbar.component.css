@@ -5,3 +5,13 @@
 .nav-link {
   cursor: pointer;
 }
+
+.nav-link.active {
+  font-weight: 600;
+  color: #ffffff !important;
+  border-bottom: 2px solid #ffffff;
+}
+
+button {
+  margin-top: 4px;
+}
