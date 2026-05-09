@@ -1,8 +1,12 @@
-<div class="container mt-4">
+<div class="container py-4">
 
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h3>All Complaints</h3>
-    <button class="btn btn-primary btn-sm" (click)="loadComplaints()">
+    <div>
+      <h3 class="page-title mb-1">Manage Complaints</h3>
+      <p class="text-muted mb-0">View, update status, and delete user complaints.</p>
+    </div>
+
+    <button class="btn btn-outline-primary btn-sm" (click)="loadAllComplaints()">
       Refresh
     </button>
   </div>
@@ -19,76 +23,93 @@
     {{ errorMessage }}
   </div>
 
-  <div class="table-responsive" *ngIf="!loading && complaints.length > 0">
-    <table class="table table-bordered table-hover align-middle">
-      <thead class="table-dark">
-        <tr>
-          <th>ID</th>
-          <th>Title</th>
-          <th>Description</th>
-          <th>User</th>
-          <th>Status</th>
-          <th>Change Status</th>
-          <th>Created</th>
-          <th>Updated</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr *ngFor="let complaint of complaints">
-          <td>{{ complaint.id }}</td>
-
-          <td>{{ complaint.title }}</td>
-
-          <td>{{ complaint.description }}</td>
-
-          <td>
-            <div *ngIf="complaint.userName || complaint.userEmail; else noUser">
-              <strong>{{ complaint.userName }}</strong><br>
-              <small>{{ complaint.userEmail }}</small>
-            </div>
-
-            <ng-template #noUser>
-              <span class="text-muted">Not Available</span>
-            </ng-template>
-          </td>
-
-          <td>
-            <span [class]="getStatusBadgeClass(complaint.status)">
-              {{ complaint.status }}
-            </span>
-          </td>
-
-          <td>
-            <select
-              class="form-select form-select-sm"
-              [ngModel]="complaint.status"
-              (ngModelChange)="updateStatus(complaint, $event)">
-              <option *ngFor="let status of statuses" [value]="status">
-                {{ status }}
-              </option>
-            </select>
-          </td>
-
-          <td>{{ complaint.createdAt | date:'short' }}</td>
-
-          <td>{{ complaint.updatedAt | date:'short' }}</td>
-
-          <td>
-            <button
-              class="btn btn-danger btn-sm"
-              (click)="deleteComplaint(complaint.id)">
-              Delete
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div *ngIf="!loading && complaints.length === 0" class="empty-state">
+    <h5>No complaints found</h5>
+    <p class="mb-0">Currently no user complaints are available.</p>
   </div>
 
-  <div *ngIf="!loading && complaints.length === 0" class="alert alert-secondary">
-    No complaints found.
+  <div class="card shadow-sm border-0" *ngIf="!loading && complaints.length > 0">
+    <div class="card-body p-0">
+
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-primary">
+            <tr>
+              <th>ID</th>
+              <th>User</th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th>Change Status</th>
+              <th>Created</th>
+              <th>Updated</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let complaint of complaints">
+              <td>{{ complaint.id }}</td>
+
+              <td>
+                <div *ngIf="complaint.userName || complaint.userEmail; else noUser">
+                  <strong>{{ complaint.userName || 'User' }}</strong><br>
+                  <small class="text-muted">{{ complaint.userEmail }}</small>
+                </div>
+
+                <ng-template #noUser>
+                  <span class="text-muted">Not Available</span>
+                </ng-template>
+              </td>
+
+              <td class="fw-semibold">{{ complaint.title }}</td>
+
+              <td class="description-cell">{{ complaint.description }}</td>
+
+              <td>
+                <span [class]="getStatusBadgeClass(complaint.status)">
+                  {{ complaint.status }}
+                </span>
+              </td>
+
+              <td>
+                <select
+                  class="form-select form-select-sm status-select"
+                  [ngModel]="complaint.status"
+                  (ngModelChange)="updateStatus(complaint, $event)"
+                  [disabled]="updatingComplaintId === complaint.id"
+                >
+                  <option *ngFor="let status of statuses" [value]="status">
+                    {{ status }}
+                  </option>
+                </select>
+
+                <small *ngIf="updatingComplaintId === complaint.id" class="text-primary">
+                  Updating...
+                </small>
+              </td>
+
+              <td>{{ complaint.createdAt | date:'short' }}</td>
+
+              <td>{{ complaint.updatedAt | date:'short' }}</td>
+
+              <td>
+                <button
+                  class="btn btn-outline-danger btn-sm"
+                  (click)="deleteComplaint(complaint.id)"
+                  [disabled]="deletingComplaintId === complaint.id"
+                >
+                  <span *ngIf="deletingComplaintId === complaint.id">Deleting...</span>
+                  <span *ngIf="deletingComplaintId !== complaint.id">Delete</span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+
+    </div>
   </div>
 
 </div>

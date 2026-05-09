@@ -1,6 +1,17 @@
-<div class="container mt-4">
+<div class="container py-4">
 
-  <h3 class="mb-4">Admin Dashboard</h3>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h3 class="page-title mb-1">Admin Dashboard</h3>
+      <p class="text-muted mb-0">
+        Overview of complaint status and service requests.
+      </p>
+    </div>
+
+    <a routerLink="/admin/complaints" class="btn btn-primary">
+      Manage Complaints
+    </a>
+  </div>
 
   <div *ngIf="loading" class="alert alert-info">
     Loading dashboard stats...
@@ -10,43 +21,44 @@
     {{ errorMessage }}
   </div>
 
-  <div class="row" *ngIf="stats">
+  <div *ngIf="!loading && !errorMessage" class="row g-4">
 
-    <div class="col-md-3 mb-3">
-      <div class="card shadow-sm border-primary">
-        <div class="card-body text-center">
-          <h6>Total Complaints</h6>
-          <h2>{{ stats.totalComplaints }}</h2>
+    <div class="col-md-3 col-sm-6">
+      <div class="card stat-card border-0 shadow-sm total-card">
+        <div class="card-body">
+          <p class="text-muted mb-1">Total Complaints</p>
+          <h2 class="fw-bold mb-0">{{ stats.totalComplaints || 0 }}</h2>
         </div>
       </div>
     </div>
 
-    <div class="col-md-3 mb-3">
-      <div class="card shadow-sm border-warning">
-        <div class="card-body text-center">
-          <h6>Open</h6>
-          <h2>{{ stats.openComplaints }}</h2>
+    <div class="col-md-3 col-sm-6">
+      <div class="card stat-card border-0 shadow-sm open-card">
+        <div class="card-body">
+          <p class="text-muted mb-1">Open</p>
+          <h2 class="fw-bold mb-0">{{ stats.openComplaints || 0 }}</h2>
         </div>
       </div>
     </div>
 
-    <div class="col-md-3 mb-3">
-      <div class="card shadow-sm border-info">
-        <div class="card-body text-center">
-          <h6>In Progress</h6>
-          <h2>{{ stats.inProgressComplaints }}</h2>
+    <div class="col-md-3 col-sm-6">
+      <div class="card stat-card border-0 shadow-sm progress-card">
+        <div class="card-body">
+          <p class="text-muted mb-1">In Progress</p>
+          <h2 class="fw-bold mb-0">{{ stats.inProgressComplaints || 0 }}</h2>
         </div>
       </div>
     </div>
 
-    <div class="col-md-3 mb-3">
-      <div class="card shadow-sm border-success">
-        <div class="card-body text-center">
-          <h6>Resolved</h6>
-          <h2>{{ stats.resolvedComplaints }}</h2>
+    <div class="col-md-3 col-sm-6">
+      <div class="card stat-card border-0 shadow-sm resolved-card">
+        <div class="card-body">
+          <p class="text-muted mb-1">Resolved</p>
+          <h2 class="fw-bold mb-0">{{ stats.resolvedComplaints || 0 }}</h2>
         </div>
       </div>
     </div>
 
   </div>
+
 </div>

@@ -1,12 +1,39 @@
-table {
+.table {
   font-size: 14px;
 }
 
-td {
+.table th {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.table td,
+.table th {
+  padding: 14px;
   vertical-align: middle;
 }
 
-.badge {
+.description-cell {
+  max-width: 280px;
+  white-space: normal;
+  color: #555;
+}
+
+.status-badge {
   font-size: 13px;
   padding: 8px 10px;
+  border-radius: 20px;
+}
+
+.status-select {
+  min-width: 140px;
+}
+
+.empty-state {
+  background-color: #ffffff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 14px;
+  padding: 30px;
+  text-align: center;
+  color: #6c757d;
 }

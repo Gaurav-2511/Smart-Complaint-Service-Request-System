@@ -1,59 +1,69 @@
-<div class="container mt-4">
-  <div class="card shadow-sm">
-    <div class="card-header bg-primary text-white">
-      <h4 class="mb-0">Add Complaint</h4>
-    </div>
+<div class="container py-4">
 
-    <div class="card-body">
-      <div *ngIf="successMessage" class="alert alert-success">
-        {{ successMessage }}
+  <div class="row justify-content-center">
+    <div class="col-lg-7">
+
+      <div class="mb-3">
+        <h3 class="page-title">Add Complaint</h3>
+        <p class="text-muted">
+          Fill the form below to submit your complaint.
+        </p>
       </div>
 
-      <div *ngIf="errorMessage" class="alert alert-danger">
-        {{ errorMessage }}
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+
+          <div *ngIf="successMessage" class="alert alert-success">
+            {{ successMessage }}
+          </div>
+
+          <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+          </div>
+
+          <form (ngSubmit)="addComplaint()">
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Complaint Title</label>
+              <input
+                type="text"
+                class="form-control"
+                name="title"
+                placeholder="Example: Water leakage in classroom"
+                [(ngModel)]="complaintRequest.title"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Description</label>
+              <textarea
+                class="form-control"
+                name="description"
+                rows="5"
+                placeholder="Write complaint details here..."
+                [(ngModel)]="complaintRequest.description"
+                required
+              ></textarea>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button class="btn btn-primary" type="submit" [disabled]="loading">
+                <span *ngIf="loading">Submitting...</span>
+                <span *ngIf="!loading">Submit Complaint</span>
+              </button>
+
+              <a routerLink="/user/dashboard" class="btn btn-outline-secondary">
+                Cancel
+              </a>
+            </div>
+
+          </form>
+
+        </div>
       </div>
 
-      <form (ngSubmit)="submitComplaint()" #complaintForm="ngForm">
-        <div class="mb-3">
-          <label class="form-label">Title</label>
-          <input
-            type="text"
-            name="title"
-            class="form-control"
-            placeholder="Enter complaint title"
-            [(ngModel)]="complaint.title"
-            required
-          />
-
-          <small class="text-danger" *ngIf="complaintForm.submitted && !complaint.title">
-            Title is required
-          </small>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Description</label>
-          <textarea
-            name="description"
-            class="form-control"
-            rows="5"
-            placeholder="Enter complaint description"
-            [(ngModel)]="complaint.description"
-            required>
-          </textarea>
-
-          <small class="text-danger" *ngIf="complaintForm.submitted && !complaint.description">
-            Description is required
-          </small>
-        </div>
-
-        <button type="submit" class="btn btn-primary" [disabled]="isLoading">
-          {{ isLoading ? 'Submitting...' : 'Submit Complaint' }}
-        </button>
-
-        <a routerLink="/user/my-complaints" class="btn btn-secondary ms-2">
-          View My Complaints
-        </a>
-      </form>
     </div>
   </div>
+
 </div>

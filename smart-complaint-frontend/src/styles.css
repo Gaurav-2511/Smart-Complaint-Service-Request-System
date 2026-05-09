@@ -1,42 +1,63 @@
-/* You can add global styles to this file, and also import other style files */
 body {
-  background-color: #f4f6f9;
-  font-family: Arial, sans-serif;
+  background-color: #f4f7fb;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-.page-wrapper {
+.min-vh-80 {
+  min-height: 80vh;
+}
+
+.auth-wrapper {
   padding: 30px 0;
 }
 
-.card {
+.auth-card {
   border: none;
-  border-radius: 12px;
-}
-
-.card-title {
-  font-weight: 600;
+  border-radius: 16px;
 }
 
 .form-control,
 .form-select {
-  border-radius: 8px;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  box-shadow: none;
+  border-color: #0d6efd;
 }
 
 .btn {
-  border-radius: 8px;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 500;
 }
 
-.status-open {
-  background-color: #ffc107;
-  color: #000;
+.card {
+  border-radius: 14px;
 }
 
-.status-in-progress {
-  background-color: #0d6efd;
-  color: #fff;
+.alert {
+  border-radius: 10px;
 }
 
-.status-resolved {
-  background-color: #198754;
-  color: #fff;
+.page-title {
+  font-weight: 700;
+  color: #0d6efd;
+}
+
+.empty-state {
+  background-color: #ffffff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 14px;
+  padding: 30px;
+  text-align: center;
+  color: #6c757d;
+}
+
+.status-badge {
+  padding: 7px 12px;
+  border-radius: 20px;
+  font-size: 13px;
 }

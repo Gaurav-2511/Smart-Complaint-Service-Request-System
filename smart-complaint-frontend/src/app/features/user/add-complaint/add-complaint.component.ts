@@ -13,37 +13,36 @@ import { ComplaintCreateRequest } from '../../../models/complaint.model';
 })
 export class AddComplaint {
 
-  complaint: ComplaintCreateRequest = {
+  complaintRequest = {
     title: '',
     description: ''
   };
 
+  loading = false;
   successMessage = '';
   errorMessage = '';
-  isLoading = false;
 
   constructor(
     private complaintService: ComplaintService,
     private router: Router
   ) { }
 
-  submitComplaint(): void {
+  addComplaint(): void {
     this.successMessage = '';
     this.errorMessage = '';
 
-    if (!this.complaint.title.trim() || !this.complaint.description.trim()) {
-      this.errorMessage = 'Title and description are required';
+    if (!this.complaintRequest.title.trim() || !this.complaintRequest.description.trim()) {
+      this.errorMessage = 'Title and description are required.';
       return;
     }
 
-    this.isLoading = true;
+    this.loading = true;
 
-    this.complaintService.addComplaint(this.complaint).subscribe({
-      next: (response) => {
-        this.isLoading = false;
-        this.successMessage = response.message || 'Complaint added successfully';
-
-        this.complaint = {
+    this.complaintService.addComplaint(this.complaintRequest).subscribe({
+      next: () => {
+        this.loading = false;
+        this.successMessage = 'Complaint submitted successfully.';
+        this.complaintRequest = {
           title: '',
           description: ''
         };
@@ -52,9 +51,9 @@ export class AddComplaint {
           this.router.navigate(['/user/my-complaints']);
         }, 1000);
       },
-      error: (error) => {
-        this.isLoading = false;
-        this.errorMessage = error.error?.message || 'Something went wrong while adding complaint';
+      error: () => {
+        this.loading = false;
+        this.errorMessage = 'Failed to submit complaint. Please try again.';
       }
     });
   }

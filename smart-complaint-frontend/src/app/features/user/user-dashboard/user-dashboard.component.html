@@ -1,44 +1,51 @@
-<div class="page-wrapper">
-  <div class="container">
+<div class="container py-4">
 
-    <div class="mb-4">
-      <h2>User Dashboard</h2>
-      <p class="text-muted">
-        Welcome user, you can add and track your complaints here.
-      </p>
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card shadow-sm border-0 dashboard-hero">
+        <div class="card-body p-4">
+          <h2 class="fw-bold mb-2">Welcome, {{ userName || 'User' }}</h2>
+          <p class="mb-0 text-muted">
+            Manage your complaints and track their status easily.
+          </p>
+          <p class="mb-0 small text-muted" *ngIf="userEmail">
+            Logged in as: {{ userEmail }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+
+    <div class="col-md-6">
+      <div class="card shadow-sm border-0 h-100 action-card">
+        <div class="card-body p-4">
+          <h5 class="fw-bold text-primary">Add New Complaint</h5>
+          <p class="text-muted">
+            Raise a new complaint or service request with title and description.
+          </p>
+          <a routerLink="/user/add-complaint" class="btn btn-primary">
+            Add Complaint
+          </a>
+        </div>
+      </div>
     </div>
 
-    <div class="row g-4">
-
-      <div class="col-md-6">
-        <div class="card shadow h-100">
-          <div class="card-body">
-            <h5 class="card-title">Add New Complaint</h5>
-            <p class="card-text">
-              Raise a new complaint or service request.
-            </p>
-            <a routerLink="/user/add-complaint" class="btn btn-primary">
-              Add Complaint
-            </a>
-          </div>
+    <div class="col-md-6">
+      <div class="card shadow-sm border-0 h-100 action-card">
+        <div class="card-body p-4">
+          <h5 class="fw-bold text-success">My Complaints</h5>
+          <p class="text-muted">
+            View your submitted complaints and check current status.
+          </p>
+          <a routerLink="/user/my-complaints" class="btn btn-success">
+            View Complaints
+          </a>
         </div>
       </div>
-
-      <div class="col-md-6">
-        <div class="card shadow h-100">
-          <div class="card-body">
-            <h5 class="card-title">My Complaints</h5>
-            <p class="card-text">
-              View your submitted complaints and check status.
-            </p>
-            <a routerLink="/user/my-complaints" class="btn btn-success">
-              View Complaints
-            </a>
-          </div>
-        </div>
-      </div>
-
     </div>
 
   </div>
+
 </div>
